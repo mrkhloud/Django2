@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    {% if not request.user.is_authenticated %}
+
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div>
+                <button type="submit">Войти</button>
+            </div>
+        </form>
+
+    {% else %}
+
+        <p>Ты уже вошёл в аккаунт. <a href="{% url 'logout_page' %}">Хочешь выйти?</a></p>
+
+    {% endif %}
+
+{% endblock %}
+
