@@ -4,7 +4,7 @@
     {% for article in articles %}
         <ul>
             <li>
-                <a href="{{ article.get_absolute_url }}">{{ article.title }}</a>
+                <a href="{{ article.get_absolute_url }}">{{ article.pk }}-{{ article.title }}</a>
             </li>
         </ul>
     {% endfor %}
