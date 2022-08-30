@@ -1,14 +1,15 @@
-from django.db.models import Q
-from django.http import Http404
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
-from .models import Article
-from .forms import ArticleForm
+from .services import *
+from .utils import *
+from .models import *
+from .forms import *
 
 
 def home(request):
-    articles = Article.objects.all()
+    articles = get_articles_for_home()
+
     context = {
         'title': 'Домашняя страница',
         'articles': articles,
@@ -17,14 +18,8 @@ def home(request):
 
 
 def detail_article(request, slug):
-    try:
-        article = Article.objects.get(slug=slug)
-    except Article.DoesNotExist:
-        raise Http404
-    except Article.MultipleObjectsReturned:
-        article = Article.objects.filter(slug=slug).first()
-    except:
-        raise Http404
+    article = get_detail_article(slug)
+
     context = {
         'title': article.title,
         'article': article
@@ -33,17 +28,12 @@ def detail_article(request, slug):
 
 
 def article_search(request):
-    try:
-        query = request.GET.get('q')
-    except:
-        query = None
-    lookups = Q(title__iregex=query) | Q(content__iregex=query) | Q(slug__iregex=query)
-    if query is None or query == '':
-        title = 'Пустой запрос'
-        articles = Article.objects.all()
-    else:
-        title = f'Результат запроса "{query}"'
-        articles = Article.objects.filter(lookups)
+    query = get_query_for_search(request)
+
+    title = get_title_for_search(query)
+
+    articles = get_articles_for_search(query)
+
     context = {
         'title': title,
         'articles': articles

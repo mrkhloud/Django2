@@ -1,6 +1,23 @@
 from django.db import models
+from django.db.models import Q
 from django.urls import reverse
-from .services import slugify
+from .services import my_slugify
+
+
+class ArticleQuerySet(models.QuerySet):
+    def search(self, query=None):
+        if query is None or query == '':
+            return self.none()
+        lookups = Q(title__iregex=query) | Q(content__iregex=query) | Q(slug__iregex=query)
+        return self.filter(lookups)
+
+
+class ArticleManager(models.Manager):
+    def get_query_set(self):
+        return ArticleQuerySet(self.model, using=self._db)
+
+    def search(self, query):
+        return self.get_query_set().search(query)
 
 
 class Article(models.Model):
@@ -9,6 +26,8 @@ class Article(models.Model):
     content = models.TextField()
     publish = models.DateTimeField(auto_now_add=True)
     update = models.DateTimeField(auto_now=True)
+
+    objects = ArticleManager()
 
     class Meta:
         verbose_name = 'Статья'
@@ -22,5 +41,5 @@ class Article(models.Model):
 
     def save(self, *args, **kwargs):
         if self.slug is None:
-            self.slug = slugify(self.title)
+            self.slug = my_slugify(self.title)
         super().save(*args, **kwargs)

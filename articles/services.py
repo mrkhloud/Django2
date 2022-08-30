@@ -1,3 +1,4 @@
+from django.http import Http404
 from django.template.defaultfilters import slugify as django_slugify
 
 alphabet = {'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd', 'е': 'e', 'ё': 'yo', 'ж': 'zh', 'з': 'z', 'и': 'i',
@@ -6,7 +7,7 @@ alphabet = {'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd', 'е': 'e', '�
             'я': 'ya'}
 
 
-def slugify(s):
+def my_slugify(s):
     """
     Overriding django slugify that allows to use russian words as well.
     """
