@@ -1,6 +1,6 @@
 from django.db import models
 from django.urls import reverse
-from .services import my_slugify
+from .services import slugify
 
 
 class Article(models.Model):
@@ -18,9 +18,9 @@ class Article(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('detail_article_page', kwargs={'pk': self.pk})
+        return reverse('detail_article_page', kwargs={'slug': self.slug})
 
     def save(self, *args, **kwargs):
         if self.slug is None:
-            self.slug = my_slugify(self.title)
+            self.slug = slugify(self.title)
         super().save(*args, **kwargs)

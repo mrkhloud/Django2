@@ -1,6 +1,15 @@
 {% extends 'base.html' %}
 {% block content %}
-
-    <a href="{{ article.get_absolute_url }}">{{ article.title }}</a>
+{% if articles %}
+    {% for article in articles %}
+        <ol>
+            <li>
+                <a href="{{ article.get_absolute_url }}">{{ article.title }}</a>
+            </li>
+        </ol>
+    {% endfor %}
+{% else %}
+Ничего не найдено
+{% endif %}
 
 {% endblock %}
