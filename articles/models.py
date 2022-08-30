@@ -1,7 +1,11 @@
+from django.conf import settings
 from django.db import models
 from django.db.models import Q
 from django.urls import reverse
 from .services import my_slugify
+
+
+User = settings.AUTH_USER_MODEL
 
 
 class ArticleQuerySet(models.QuerySet):
@@ -21,8 +25,10 @@ class ArticleManager(models.Manager):
 
 
 class Article(models.Model):
+    user = models.ForeignKey(User, on_delete=models.SET_NULL,
+                             blank=True, null=True)
     title = models.CharField(max_length=60)
-    slug = models.SlugField(blank=True, null=True)
+    slug = models.SlugField(unique=True)
     content = models.TextField()
     publish = models.DateTimeField(auto_now_add=True)
     update = models.DateTimeField(auto_now=True)
@@ -40,6 +46,5 @@ class Article(models.Model):
         return reverse('detail_article_page', kwargs={'slug': self.slug})
 
     def save(self, *args, **kwargs):
-        if self.slug is None:
-            self.slug = my_slugify(self.title)
+        self.slug = my_slugify(self.title)
         super().save(*args, **kwargs)
