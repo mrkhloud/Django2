@@ -1,14 +1,8 @@
 {% extends 'base.html' %}
 {% block content %}
-
-    {% if created %}
-        <a href="{{ article.get_absolute_url }}">{{ article.title }}</a>
-    {% else %}
         <form method="post">
             {% csrf_token %}
             {{ form.as_p }}
-            <div class="form_element"><button type="submit">Создать</button></div>
+            <div><button type="submit">Создать</button></div>
         </form>
-    {% endif %}
-
 {% endblock %}

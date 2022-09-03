@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% if message %}
+
+    {{ message }}
+
+{% endif %}
+
+<form method="post">
+    {% csrf_token %}
+    <div class="recipe-form">
+        <h1>Рецепт</h1>
+        {{ form.as_p }}
+    </div>
+    {% if formset %}
+        <h1>Игредиенты</h1>
+        {{ formset.management_form }}
+        <div id="ingredient-form-list">
+            {% for form in formset %}
+                <div class="ingredient-form">
+                    {{ form.as_p }}
+                </div>
+            {% endfor %}
+        </div>
+        <div id="empty-form" class="hidden">
+            {{ formset.empty_form.as_p }}
+        </div>
+        <button id="add-more" type="button">Добавить ингредиент</button>
+    {% endif %}
+    <button type="submit">Сохранить</button>
+</form>
+
+<script>
+    const addMoreBtn = document.getElementById('add-more')
+    addMoreBtn.addEventListener('click', add_new_form)
+    const totalNewForms = document.getElementById('id_form-TOTAL_FORMS')
+
+    function add_new_form(event) {
+        if (event) {
+            event.preventDefault()
+        }
+        const currentIngredientForms = document.getElementsByClassName('ingredient-form')
+        const currentFormCount = currentIngredientForms.length
+        const formCopyTarget = document.getElementById('ingredient-form-list')
+        const CopyemptyFormEl = document.getElementById('empty-form').cloneNode(true)
+        CopyemptyFormEl.setAttribute('class', 'ingredient-form')
+        CopyemptyFormEl.setAttribute('id', `form-${currentFormCount}`)
+        const regex = new RegExp('<__pre></__pre>fix__', 'g')
+        CopyemptyFormEl.innerHTML = CopyemptyFormEl.innerHTML.replace(regex, currentFormCount)
+        totalNewForms.setAttribute('value', currentFormCount + 1)
+        formCopyTarget.append(CopyemptyFormEl)
+    }
+</script>
+
+
+{% endblock %}

@@ -1,4 +1,3 @@
-from django.http import Http404
 from django.template.defaultfilters import slugify as django_slugify
 
 alphabet = {'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd', 'е': 'e', 'ё': 'yo', 'ж': 'zh', 'з': 'z', 'и': 'i',

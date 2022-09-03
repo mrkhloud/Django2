@@ -1,41 +1,18 @@
-ul.gorizontal_list{
-   display: inline-block;
-}
-
-ul.gorizontal_list li{
-   display: inline-block;
-}
-
-div.menu {
-    border: 3px solid;
-    border-radius: 10px;
-    margin-bottom: 30px;
-}
-
-li.search{
-    border: 2px solid;
-    border-radius: 10px;
-    padding: 10px;
-    margin-left: 50px;
+.hidden {
+    display:none;
 }
 
 a {
     text-decoration: none;
-    color: black;
+    color: #f0f0f0;
 }
 
 ul {
     list-style-type: none;
 }
 
-div.form_element {
-    margin: 10px;
-}
-
-div.form_element {
-    margin:
-}
-
-li.menu_elements {
-    margin: 10px;
+body {
+    background-color: #1f1f1f;
+    color: #f0f0f0;
+    margin: 0px;
 }

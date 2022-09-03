@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_htmx',
     'articles.apps.ArticlesConfig',
     'accounts.apps.AccountsConfig',
     'recipes.apps.RecipesConfig'
@@ -39,6 +40,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_htmx.middleware.HtmxMiddleware'
 ]
 
 ROOT_URLCONF = 'trydjango.urls'
@@ -49,7 +51,8 @@ TEMPLATES = [
         'DIRS': [
             BASE_DIR / 'templates',
             BASE_DIR / 'templates/articles',
-            BASE_DIR / 'templates/accounts'
+            BASE_DIR / 'templates/accounts',
+            BASE_DIR / 'templates/recipes'
         ],
         'APP_DIRS': True,
         'OPTIONS': {

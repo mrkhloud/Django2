@@ -4,31 +4,34 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ title }}</title>
-    <base href="/">
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <script src="https://unpkg.com/htmx.org@1.8.0"></script>
 </head>
 <body>
-    <div class="menu">
-        <ul class="gorizontal_list">
-            <li class="menu_elements">
+    <div>
+        <ul>
+            <li>
                 <a href="{% url 'home_page' %}">Главная</a>
             </li>
             {% if request.user.is_authenticated %}
-                <li class="menu_elements">
+                <li>
                     <a href="{% url 'create_article_page' %}">Создание новой статьи</a>
                 </li>
-                <li class="menu_elements">
+                <li>
+                    <a href="{% url 'list_recipe' %}">Список рецептов</a>
+                </li>
+                <li>
                     <a href="{% url 'logout_page' %}">Выйти из аккаунта</a>
                 </li>
             {% else %}
-                <li class="menu_elements">
+                <li>
                     <a href="{% url 'login_page' %}">Вход в аккаунт</a>
                 </li>
-                <li class="menu_elements">
+                <li>
                     <a href="{% url 'registration_page' %}">Зарегистрироваться</a>
                 </li>
             {% endif %}
-            <li class="search">
+            <li>
                 <form action="{% url 'res_search_page' %}">
                     <input type="text" name="q">
                     <input type="submit">
@@ -37,6 +40,9 @@
         </ul>
     </div>
     {% block content %}
+        {% if obj_is_none %}
+            <h1>Такой страницы нет!</h1>
+        {% endif %}
     {% endblock %}
 </body>
 </html>

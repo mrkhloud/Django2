@@ -1,4 +1,5 @@
 from django.http import Http404
+from django.shortcuts import redirect
 
 from .models import Article
 
@@ -34,4 +35,10 @@ def get_title_for_search(query):
 
 
 def get_articles_for_search(query):
-    return
+    return Article.objects.search(query)
+
+
+def create_obj(request, form):
+    article = form.save(commit=False)
+    article.user = request.user
+    article.save()

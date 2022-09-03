@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    {% for object in objects_list %}
+        <ul>
+            <li>
+                <a href="{{ object.get_absolute_url }}">{{ object.pk }}-{{ object.name }}</a>
+            </li>
+        </ul>
+    {% endfor %}
+    <a href="{% url 'create_recipe' %}">Новый рецепт</a>
+{% endblock %}

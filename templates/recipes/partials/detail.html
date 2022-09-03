@@ -1,0 +1,10 @@
+    <h1>{{ object.name }}</h1>
+    <p>{{ object.publish }} | {{ object.update }}</p>
+    <p>{{ object.description }}</p>
+    {% for object_ingredient in object_ingredients %}
+        <p>{{object_ingredient.name}}</p>
+        <p>{{object_ingredient.quantity}} - {{object_ingredient.unit}}</p>
+        <p>{{object_ingredient.as_mks}}</p>
+        <p>{{object_ingredient.as_imperial}}</p>
+    {% endfor %}
+    <a href="{{ object.get_update_url }}">Редактировать рецепт</a>

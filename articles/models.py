@@ -26,12 +26,13 @@ class ArticleManager(models.Manager):
 
 class Article(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL,
-                             blank=True, null=True)
-    title = models.CharField(max_length=60)
+                             blank=True, null=True,
+                             verbose_name='Автор статьи')
+    title = models.CharField(max_length=60, verbose_name='Заголовок')
     slug = models.SlugField(unique=True)
-    content = models.TextField()
-    publish = models.DateTimeField(auto_now_add=True)
-    update = models.DateTimeField(auto_now=True)
+    content = models.TextField(verbose_name='Содержимое')
+    publish = models.DateTimeField(auto_now_add=True, verbose_name='Время и дата публикации')
+    update = models.DateTimeField(auto_now=True, verbose_name='Время и дата последнего редактирования')
 
     objects = ArticleManager()
 
