@@ -11,7 +11,7 @@ class Recipe(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
                              verbose_name='Хозяин рецепта',
                              blank=True, null=True)
-    name = models.CharField(max_length=220, verbose_name='Название рецепта')
+    name = models.CharField(max_length=220, verbose_name='Название')
     description = models.TextField(verbose_name='Описание', blank=True, null=True)
     directions = models.TextField(blank=True, null=True)
     publish = models.DateTimeField(auto_now_add=True, verbose_name='Дата публикации')
@@ -33,6 +33,9 @@ class Recipe(models.Model):
 
     def get_update_url(self):
         return reverse('update_recipe', kwargs={'id': self.pk})
+
+    def get_ingredients(self):
+        return self.recipeingredient_set.all()
 
 
 class RecipeIngredient(models.Model):
@@ -56,6 +59,13 @@ class RecipeIngredient(models.Model):
 
     def get_absolute_url(self):
         return self.recipe.get_absolute_url()
+
+    def get_hx_edit_url(self):
+        kwargs = {
+            'parent_id': self.recipe.pk,
+            'id': self.pk
+        }
+        return reverse('ingredient_hx_recipe', kwargs=kwargs)
 
     def convert_to_system(self, system='mks'):
         if self.quantity_float is not None:

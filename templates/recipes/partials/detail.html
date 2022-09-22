@@ -1,7 +1,7 @@
     <h1>{{ object.name }}</h1>
     <p>{{ object.publish }} | {{ object.update }}</p>
     <p>{{ object.description }}</p>
-    {% for object_ingredient in object_ingredients %}
+    {% for object_ingredient in object.get_ingredients %}
         <p>{{object_ingredient.name}}</p>
         <p>{{object_ingredient.quantity}} - {{object_ingredient.unit}}</p>
         <p>{{object_ingredient.as_mks}}</p>
