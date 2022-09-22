@@ -3,14 +3,11 @@
 
 <div>
     <h1>Рецепт</h1>
-    {% include 'partials/forms.html' %}
+    {% include 'partials/form.html' %}
 </div>
 
 <div>
     <h1>Ингредиенты</h1>
-    {% for ingredient in object.get_ingredients %}
-        {% include 'partials/ingredients-inline.html' with object=ingredient %}
-    {% endfor %}
 </div>
 
 {% endblock %}
