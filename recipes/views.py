@@ -40,7 +40,6 @@ def recipe_detail_hx_view(request, id=None):
         }
         return render(request, 'base.html', context=context)
     context = {
-        'title': f'Подробная страница рецепта {obj.name}',
         'object': obj,
     }
     return render(request, 'partials/detail.html', context=context)
@@ -62,10 +61,12 @@ def recipe_create_view(request):
 def recipe_update_view(request, id=None):
     obj = get_object_or_404(Recipe, id=id, user=request.user)
     form = RecipeForm(request.POST or None, instance=obj)
+    new_ingredient_url = reverse('hx-new-ingredient', kwargs={'parent_id': obj.id})
     context = {
         'title': 'Редактирование рецепта',
         'form': form,
         'object': obj,
+        'new_ingredient_url': new_ingredient_url
     }
     if form.is_valid():
         recipe_create(request, form)
@@ -74,4 +75,35 @@ def recipe_update_view(request, id=None):
     return render(request, 'create-update.html', context=context)
 
 
-
+@login_required()
+def recipe_ingredient_update_hx_view(request, parent_id=None, id=None):
+    try:
+        parent_obj = Recipe.objects.get(id=parent_id, user=request.user)
+    except:
+        parent_obj = None
+    if parent_obj is None:
+        context = {
+            'obj_is_none': True
+        }
+        return render(request, 'base.html', context=context)
+    obj = None
+    if id is not None:
+        try:
+            obj = RecipeIngredient.objects.get(id=id, recipe=parent_obj)
+        except:
+            obj = None
+    form = RecipeIngredientForm(request.POST or None, instance=obj)
+    url = obj.get_hx_update_url() if obj is not None else reverse('hx-new-ingredient', kwargs={'parent_id': parent_id})
+    context = {
+        'object': obj,
+        'form': form,
+        'url': url
+    }
+    if form.is_valid():
+        new_obj = form.save(commit=False)
+        if obj is None:
+            new_obj.recipe = parent_obj
+        new_obj.save()
+        context['object'] = new_obj
+        return render(request, 'partials/ingredient-inline.html', context=context)
+    return render(request, 'partials/ingredient-form.html', context=context)

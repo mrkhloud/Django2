@@ -8,6 +8,16 @@
 
 <div>
     <h1>Ингредиенты</h1>
+    {% for ingredient in object.get_ingredients %}
+        {% include 'partials/ingredient-inline.html' with object=ingredient %}
+    {% endfor %}
+    {% if new_ingredient_url %}
+        <div id="ingredient-create">
+            <button hx-trigger="click" hx-get="{{ new_ingredient_url }}" hx-target="#ingredient-create">
+                Добавить ингредиент
+            </button>
+        </div>
+    {% endif %}
 </div>
 
 {% endblock %}

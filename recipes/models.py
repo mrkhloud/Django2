@@ -57,6 +57,12 @@ class RecipeIngredient(models.Model):
     def get_absolute_url(self):
         return self.recipe.get_absolute_url()
 
+    def get_hx_update_url(self):
+        return reverse('hx-update-ingredient', kwargs={
+            'parent_id': self.recipe.id,
+            'id': self.id
+        })
+
     def convert_to_system(self, system='mks'):
         if self.quantity_float is not None:
             ureg = pint.UnitRegistry(system=system)
