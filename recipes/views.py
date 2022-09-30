@@ -1,5 +1,5 @@
 from django.http import Http404, HttpResponse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 
 from .services import get_user_recipes
@@ -53,7 +53,12 @@ def recipe_create_view(request):
         'form': form,
     }
     if form.is_valid():
-        recipe_create(request, form)
+        obj = recipe_create(request, form)
+        if request.htmx:
+            headers = {
+                'HX-Redirect': obj.get_absolute_url()
+            }
+            return HttpResponse('-', headers=headers)
     return render(request, 'create-update.html', context=context)
 
 

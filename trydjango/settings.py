@@ -29,7 +29,8 @@ INSTALLED_APPS = [
     'django_htmx',
     'articles.apps.ArticlesConfig',
     'accounts.apps.AccountsConfig',
-    'recipes.apps.RecipesConfig'
+    'recipes.apps.RecipesConfig',
+    'search.apps.SearchConfig'
 ]
 
 MIDDLEWARE = [
@@ -52,7 +53,8 @@ TEMPLATES = [
             BASE_DIR / 'templates',
             BASE_DIR / 'templates/articles',
             BASE_DIR / 'templates/accounts',
-            BASE_DIR / 'templates/recipes'
+            BASE_DIR / 'templates/recipes',
+            BASE_DIR / 'templates/search'
         ],
         'APP_DIRS': True,
         'OPTIONS': {

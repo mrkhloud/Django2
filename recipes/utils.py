@@ -34,3 +34,4 @@ def recipe_create(request, form):
     parent = form.save(commit=False)
     parent.user = request.user
     parent.save()
+    return parent
