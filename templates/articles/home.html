@@ -7,6 +7,7 @@
                 <a href="{{ article.get_absolute_url }}">{{ article.pk }}-{{ article.title }}</a>
             </li>
         </ul>
+    {% empty %}
+        <h1>Ничего не найдено!</h1>
     {% endfor %}
-
 {% endblock %}

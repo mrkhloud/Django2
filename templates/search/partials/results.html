@@ -1,0 +1,13 @@
+{% for object in queryset %}
+    <ul>
+        <li>
+            <a href="{{ object.get_absolute_url }}">{{ object.title }}</a>
+        </li>
+    </ul>
+{% empty %}
+    <h1>Ничего не найдено!</h1>
+{% endfor %}
+
+{% if request.htmx %}
+    <a href="{% url 'search' %}?q={{ request.GET.q }}&type={{ request.GET.type }}">Показать всё</a>
+{% endif %}

@@ -1,6 +1,7 @@
 from django.http import Http404
 from django.shortcuts import redirect
 
+from recipes.models import Recipe
 from .models import Article
 
 
@@ -20,10 +21,7 @@ def get_articles_for_home():
 
 
 def get_query_for_search(request):
-    try:
-        query = request.GET.get('q')
-    except:
-        query = None
+    query = request.GET.get('q')
     return query
 
 
@@ -34,8 +32,13 @@ def get_title_for_search(query):
     return title
 
 
-def get_articles_for_search(query):
-    return Article.objects.search(query)
+def search(request):
+    query = get_query_for_search(request)
+    type = request.GET.get('type')
+    if type == 'articles':
+        return Article.objects.search(query=query)
+    elif type == 'recipes':
+        return Recipe.objects.search(query=query)
 
 
 def create_obj(request, form):

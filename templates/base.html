@@ -32,10 +32,7 @@
                 </li>
             {% endif %}
             <li>
-                <form action="{% url 'res_search_page' %}">
-                    <input type="text" name="q">
-                    <input type="submit">
-                </form>
+                {% include 'search/search-form.html' %}
             </li>
         </ul>
     </div>

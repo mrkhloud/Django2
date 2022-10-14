@@ -30,6 +30,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('articles.urls')),
     path('', include('accounts.urls')),
+    path('search/', include('search.urls'))
 ]
 
 if DEBUG:

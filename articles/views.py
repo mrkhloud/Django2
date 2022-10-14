@@ -24,17 +24,6 @@ def detail_article(request, slug):
     return render(request, 'detail_article.html', context=context)
 
 
-def article_search(request):
-    query = get_query_for_search(request)
-    title = get_title_for_search(query)
-    articles = get_articles_for_search(query)
-    context = {
-        'title': title,
-        'articles': articles
-    }
-    return render(request, 'search_article.html', context)
-
-
 @login_required
 def create_article(request):
     form = ArticleForm(request.POST or None)

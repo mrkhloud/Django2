@@ -4,7 +4,6 @@ from django.db.models import Q
 from django.urls import reverse
 from .services import my_slugify
 
-
 User = settings.AUTH_USER_MODEL
 
 
@@ -12,7 +11,7 @@ class ArticleQuerySet(models.QuerySet):
     def search(self, query=None):
         if query is None or query == '':
             return self.none()
-        lookups = Q(title__iregex=query) | Q(content__iregex=query) | Q(slug__iregex=query)
+        lookups = Q(title__iregex=query) | Q(content__iregex=query)
         return self.filter(lookups)
 
 
@@ -35,6 +34,10 @@ class Article(models.Model):
     update = models.DateTimeField(auto_now=True, verbose_name='Время и дата последнего редактирования')
 
     objects = ArticleManager()
+
+    @property
+    def name(self):
+        return self.title
 
     class Meta:
         verbose_name = 'Статья'

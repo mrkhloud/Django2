@@ -1,10 +1,27 @@
 import pint
 from django.conf import settings
 from django.db import models
+from django.db.models import Q
 from django.urls import reverse
 
 from .validators import validate_unit_of_measure
 from .utils import number_str_to_float
+
+
+class RecipeQuerySet(models.QuerySet):
+    def search(self, query=None):
+        if query is None or query == '':
+            return self.none()
+        lookups = Q(name__iregex=query)
+        return self.filter(lookups)
+
+
+class RecipeManager(models.Manager):
+    def get_query_set(self):
+        return RecipeQuerySet(self.model, using=self._db)
+
+    def search(self, query):
+        return self.get_query_set().search(query)
 
 
 class Recipe(models.Model):
@@ -17,6 +34,12 @@ class Recipe(models.Model):
     publish = models.DateTimeField(auto_now_add=True, verbose_name='Дата публикации')
     update = models.DateTimeField(auto_now=True, verbose_name='Дата последнего обновления')
     active = models.BooleanField(default=True, verbose_name='Могут видеть другие пользователи?')
+
+    objects = RecipeManager()
+
+    @property
+    def title(self):
+        return self.name
 
     class Meta:
         verbose_name = 'Рецепт'

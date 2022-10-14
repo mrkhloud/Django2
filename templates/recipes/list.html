@@ -7,6 +7,10 @@
                 <a href="{{ object.get_absolute_url }}">{{ object.pk }}-{{ object.name }}</a>
             </li>
         </ul>
+    {% empty %}
+        <h1>Ничего не найдено!</h1>
     {% endfor %}
-    <a href="{% url 'create_recipe' %}">Новый рецепт</a>
+    <div class="add-recipe">
+        <a href="{% url 'create_recipe' %}">Создать рецепт</a>
+    </div>
 {% endblock %}
