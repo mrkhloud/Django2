@@ -49,6 +49,9 @@ class Article(models.Model):
     def get_absolute_url(self):
         return reverse('detail_article_page', kwargs={'slug': self.slug})
 
+    def get_delete_url(self):
+        return reverse('delete_article', kwargs={'slug': self.slug})
+
     def save(self, *args, **kwargs):
         self.slug = my_slugify(self.title)
         super().save(*args, **kwargs)

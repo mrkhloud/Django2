@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 
@@ -35,3 +35,16 @@ def create_article(request):
         create_obj(request, form)
         return redirect('home_page')
     return render(request, 'create_article.html', context=context)
+
+
+@login_required
+def delete_article(request, slug=None):
+    article = get_object_or_404(Article, slug=slug, user=request.user)
+    if request.method == 'POST':
+        article.delete()
+        return redirect('home_page')
+    context = {
+        'object': article,
+        'title': f'Удаление {article.name}'
+    }
+    return render(request, 'delete.html', context=context)

@@ -5,5 +5,5 @@
     {{ article.slug }}
     {{ article.publish }}
     {{ article.update }}
-
+    <a href="{{ article.get_delete_url }}">Удалить статью</a>
 {% endblock %}

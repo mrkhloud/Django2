@@ -112,3 +112,29 @@ def recipe_ingredient_update_hx_view(request, parent_id=None, id=None):
         context['object'] = new_obj
         return render(request, 'partials/ingredient-inline.html', context=context)
     return render(request, 'partials/ingredient-form.html', context=context)
+
+
+@login_required()
+def recipe_delete_view(request, id=None):
+    obj = get_object_or_404(Recipe, id=id, user=request.user)
+    if request.method == 'POST':
+        obj.delete()
+        return redirect('list_recipe')
+    context = {
+        'object': obj
+    }
+    return render(request, 'delete.html', context=context)
+
+
+@login_required()
+def recipe_ingredient_delete_view(request, parent_id=None, id=None):
+    obj = get_object_or_404(RecipeIngredient, recipe__id=parent_id, id=id, recipe__user=request.user)
+    if request.method == 'POST':
+        obj.delete()
+        success_url = reverse('detail_recipe', kwargs={'id': parent_id})
+        return redirect(success_url)
+    context = {
+        'object': obj,
+        'title': f'Удаление {obj.name}'
+    }
+    return render(request, 'delete.html', context=context)

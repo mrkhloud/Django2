@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if object %}
+        <form method="POST" action=".">
+            {% csrf_token %}
+            <p>Ты действительно хочешь удалить {{ object.name }}?</p>
+            <button type="submit">Да, удалить</button>
+        </form>
+    {% endif %}
+{% endblock %}

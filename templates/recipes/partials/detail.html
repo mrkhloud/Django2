@@ -7,4 +7,5 @@
     <p>{{object_ingredient.as_mks}}</p>
     <p>{{object_ingredient.as_imperial}}</p>
 {% endfor %}
+<a href="{{ object.get_delete_url }}">Удалить рецепт</a>
 <a href="{{ object.get_update_url }}">Редактировать рецепт</a>
