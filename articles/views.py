@@ -41,10 +41,6 @@ def create_article(request):
 @login_required
 def delete_article(request, slug=None):
     article = Article.objects.get(slug=slug, user=request.user)
-    if article is None:
-        if request.htmx:
-            return HttpResponse('Статейка была удалена!')
-        raise Http404()
     if request.method == 'POST':
         article.delete()
         success_url = reverse('home_page')
@@ -52,7 +48,7 @@ def delete_article(request, slug=None):
             headers = {
                 'HX-Redirect': success_url
             }
-            return HttpResponse('йцу', headers=headers)
+            return HttpResponse('', headers=headers)
         return redirect('home_page')
     context = {
         'object': article,
