@@ -1,6 +1,7 @@
+from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.urls import reverse_lazy
+from django.urls import reverse
 
 from .utils import *
 from .forms import *
@@ -39,9 +40,19 @@ def create_article(request):
 
 @login_required
 def delete_article(request, slug=None):
-    article = get_object_or_404(Article, slug=slug, user=request.user)
+    article = Article.objects.get(slug=slug, user=request.user)
+    if article is None:
+        if request.htmx:
+            return HttpResponse('Статейка была удалена!')
+        raise Http404()
     if request.method == 'POST':
         article.delete()
+        success_url = reverse('home_page')
+        if request.htmx:
+            headers = {
+                'HX-Redirect': success_url
+            }
+            return HttpResponse('йцу', headers=headers)
         return redirect('home_page')
     context = {
         'object': article,

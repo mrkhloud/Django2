@@ -1,9 +1,12 @@
 {% extends 'base.html' %}
 {% block content %}
-
     {{ article.content }}
     {{ article.slug }}
     {{ article.publish }}
     {{ article.update }}
-    <a href="{{ article.get_delete_url }}">Удалить статью</a>
+{{ article.get_delete_url }}
+    <a href="{{ article.get_delete_url }}"
+    hx-post="{{ article.get_delete_url }}"
+    hx-confirm="Ты уверен что хочешь удалить {{article.title}}"
+    hx-trigger="click">Удалить статью</a>
 {% endblock %}
