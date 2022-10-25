@@ -4,7 +4,7 @@ from django.db import models
 from django.db.models import Q
 from django.urls import reverse
 
-from .validators import validate_unit_of_measure
+from .validators import validate_unit_of_measure, validate_entered_type
 from .utils import number_str_to_float
 
 
@@ -65,7 +65,7 @@ class RecipeIngredient(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     name = models.CharField(max_length=220, verbose_name='Название')
     description = models.TextField(verbose_name='Описание', blank=True, null=True)
-    quantity = models.CharField(max_length=50, verbose_name='Количество')
+    quantity = models.CharField(max_length=50, verbose_name='Количество', validators=(validate_entered_type,))
     quantity_float = models.FloatField(blank=True, null=True)
     unit = models.CharField(max_length=50, verbose_name='Мера счёта', validators=(validate_unit_of_measure,))
     directions = models.TextField(blank=True, null=True)

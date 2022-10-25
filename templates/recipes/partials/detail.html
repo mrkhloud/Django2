@@ -7,5 +7,9 @@
     <p>{{object_ingredient.as_mks}}</p>
     <p>{{object_ingredient.as_imperial}}</p>
 {% endfor %}
-<a href="{{ object.get_delete_url }}">Удалить рецепт</a>
+<a href="{{ object.get_delete_url }}"
+   hx-post="{{ object.get_delete_url }}"
+   hx-confirm="Ты действительно хочешь удалить {{ object.name }}"
+   hx-trigger="click"
+   hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>Удалить рецепт</a>
 <a href="{{ object.get_update_url }}">Редактировать рецепт</a>

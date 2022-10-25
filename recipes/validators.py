@@ -11,3 +11,13 @@ def validate_unit_of_measure(value):
         raise ValidationError(f'{value} является не допустимой мерой счёта!')
     except:
         raise ValidationError('Неизвестное значение')
+
+
+def validate_entered_type(value):
+    try:
+        int(value)
+    except ValueError:
+        raise ValidationError('Вы ввели не число!')
+    except Exception as e:
+        print(e)
+

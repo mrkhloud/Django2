@@ -32,8 +32,9 @@ def recipe_detail_view(request, id=None):
 def recipe_detail_hx_view(request, id=None):
     try:
         obj = Recipe.objects.get(id=id, user=request.user)
-    except:
+    except Exception as e:
         obj = None
+        print(e)
     if obj is None:
         context = {
             'obj_is_none': True
@@ -84,8 +85,9 @@ def recipe_update_view(request, id=None):
 def recipe_ingredient_update_hx_view(request, parent_id=None, id=None):
     try:
         parent_obj = Recipe.objects.get(id=parent_id, user=request.user)
-    except:
+    except Exception as e:
         parent_obj = None
+        print(e)
     if parent_obj is None:
         context = {
             'obj_is_none': True
@@ -95,8 +97,9 @@ def recipe_ingredient_update_hx_view(request, parent_id=None, id=None):
     if id is not None:
         try:
             obj = RecipeIngredient.objects.get(id=id, recipe=parent_obj)
-        except:
+        except Exception as e:
             obj = None
+            print(e)
     form = RecipeIngredientForm(request.POST or None, instance=obj)
     url = obj.get_hx_update_url() if obj is not None else reverse('hx-new-ingredient', kwargs={'parent_id': parent_id})
     context = {
@@ -116,22 +119,47 @@ def recipe_ingredient_update_hx_view(request, parent_id=None, id=None):
 
 @login_required()
 def recipe_delete_view(request, id=None):
-    obj = get_object_or_404(Recipe, id=id, user=request.user)
+    try:
+        obj = Recipe.objects.get(id=id, user=request.user)
+    except Exception as e:
+        obj = None
+        print(e)
+    if obj is None:
+        if request.htmx:
+            return HttpResponse('HTMX REQUEST!')
+        raise Http404()
     if request.method == 'POST':
         obj.delete()
-        return redirect('list_recipe')
+        success_url = reverse('list_recipe')
+        if request.htmx:
+            headers = {
+                'HX-Redirect': success_url
+            }
+            return HttpResponse('HTMX REDIRECT!', headers=headers)
+        return redirect(success_url)
     context = {
-        'object': obj
+        'object': obj,
+        'title': f'Удаление {obj.name}'
     }
     return render(request, 'delete.html', context=context)
 
 
 @login_required()
 def recipe_ingredient_delete_view(request, parent_id=None, id=None):
-    obj = get_object_or_404(RecipeIngredient, recipe__id=parent_id, id=id, recipe__user=request.user)
+    try:
+        obj = RecipeIngredient.objects.get(recipe__id=parent_id, id=id)
+    except Exception as e:
+        obj = None
+        print(e)
+    if obj is None:
+        if request.htmx:
+            return HttpResponse('HTMX REQUEST!')
+        raise Http404()
     if request.method == 'POST':
         obj.delete()
         success_url = reverse('detail_recipe', kwargs={'id': parent_id})
+        if request.htmx:
+            return HttpResponse('HTMX REDIRECT!')
         return redirect(success_url)
     context = {
         'object': obj,
