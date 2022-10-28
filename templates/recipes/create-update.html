@@ -1,23 +1,26 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<div>
-    <h1>Рецепт</h1>
-    {% include 'partials/form.html' %}
-</div>
-
-<div>
-    <h1>Ингредиенты</h1>
-    {% for ingredient in object.get_ingredients %}
-        {% include 'partials/ingredient-inline.html' with object=ingredient %}
-    {% endfor %}
-    {% if new_ingredient_url %}
-        <div id="ingredient-create">
-            <button hx-trigger="click" hx-get="{{ new_ingredient_url }}" hx-target="#ingredient-create">
-                Добавить ингредиент
-            </button>
-        </div>
-    {% endif %}
+<div class="row">
+    <div class="col col-md">
+        <h1>Рецепт</h1>
+        {% include 'partials/form.html' %}
+    </div>
+    <div  class="col">
+        {%if object.get_ingredients or new_ingredient_url %}
+            <h1>Ингредиенты</h1>
+            {% for ingredient in object.get_ingredients %}
+                {% include 'partials/ingredient-inline.html' with object=ingredient %}
+            {% endfor %}
+            {% if new_ingredient_url %}
+                <div id="ingredient-create">
+                    <button hx-trigger="click" hx-get="{{ new_ingredient_url }}" hx-target="#ingredient-create">
+                        Добавить ингредиент
+                    </button>
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
 </div>
 
 {% endblock %}

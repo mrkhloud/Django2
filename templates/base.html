@@ -3,45 +3,39 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
     <title>{{ title }}</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'articles/css/style.css' %}">
-    <script src="https://unpkg.com/htmx.org@1.8.0"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
+          crossorigin="anonymous">
+    <link rel="stylesheet"
+          type="text/css"
+          href="{% static 'articles/css/style.css' %}">
+    <script src="https://unpkg.com/htmx.org@1.8.0">
+
+    </script>
 </head>
 <body>
     <div>
-        <ul>
-            <li>
-                <a href="{% url 'home_page' %}">Главная</a>
-            </li>
-            {% if request.user.is_authenticated %}
-                <li>
-                    <a href="{% url 'create_article_page' %}">Создание новой статьи</a>
-                </li>
-                <li>
-                    <a href="{% url 'list_recipe' %}">Список рецептов</a>
-                </li>
-                <li>
-                    <a href="{% url 'logout_page' %}">Выйти из аккаунта</a>
-                </li>
-            {% else %}
-                <li>
-                    <a href="{% url 'login_page' %}">Вход в аккаунт</a>
-                </li>
-                <li>
-                    <a href="{% url 'registration_page' %}">Зарегистрироваться</a>
-                </li>
-            {% endif %}
-            <li>
-                {% include 'search/search-form.html' %}
-            </li>
-        </ul>
+        {% include 'base/navbar.html' %}
     </div>
-    <a href="{% static 'articles/css/style.css' %}">static</a>
+    <div class="container">
+         <div class="row">
+             <div class="col">
     {% block content %}
         {% if obj_is_none %}
             <h1>Такой страницы нет!</h1>
         {% endif %}
     {% endblock %}
+            </div>
+         </div>
+    </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+        crossorigin="anonymous">
+</script>
 
 <script>
     document.body.addEventListener('htmx:configRequest', (event)=>{

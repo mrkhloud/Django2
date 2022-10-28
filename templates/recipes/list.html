@@ -10,7 +10,5 @@
     {% empty %}
         <h1>Ничего не найдено!</h1>
     {% endfor %}
-    <div class="add-recipe">
-        <a href="{% url 'create_recipe' %}">Создать рецепт</a>
-    </div>
+        <a href="{% url 'create_recipe' %}" class="add-recipe">Создать рецепт</a>
 {% endblock %}

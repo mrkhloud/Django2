@@ -1,4 +1,4 @@
-<div id="ingredient-{{ object.id }}">
+<div id="ingredient-{{ object.id }}" class="col">
     {{ object.name }} - {{ object.quantity }} {{ object.unit }}
     <button hx-trigger="click" hx-get="{{ object.get_hx_update_url }}"
             hx-target="#ingredient-{{ object.id }}">Редактировать</button>
