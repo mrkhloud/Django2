@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ title }}</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'articles/css/style.css' %}">
     <script src="https://unpkg.com/htmx.org@1.8.0"></script>
 </head>
 <body>
@@ -36,6 +36,7 @@
             </li>
         </ul>
     </div>
+    <a href="{% static 'articles/css/style.css' %}">static</a>
     {% block content %}
         {% if obj_is_none %}
             <h1>Такой страницы нет!</h1>

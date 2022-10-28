@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import (
     path,
     include,
@@ -22,7 +23,7 @@ from django.urls import (
 from .settings import (
     DEBUG,
     STATIC_URL,
-    STATIC_ROOT,
+    STATIC_ROOT
 )
 
 
@@ -32,6 +33,3 @@ urlpatterns = [
     path('', include('accounts.urls')),
     path('search/', include('search.urls'))
 ]
-
-if DEBUG:
-    urlpatterns += static(STATIC_URL, document_root=STATIC_ROOT)
